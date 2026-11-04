@@ -30,6 +30,7 @@ export async function registerUser(input: unknown): Promise<RegisterResult> {
     return {
       success: false,
       error: parsed.error.issues[0]?.message ?? "Données invalides",
+     
     }
   }
 
