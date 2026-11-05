@@ -50,3 +50,6 @@ next-env.d.ts
 # documentation interne (non versionnée)
 document_cadrage_boncop.md
 boncop-accueil.html
+
+# fichiers générés par Next.js (agents)
+AGENTS.md
