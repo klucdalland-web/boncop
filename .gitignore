@@ -1,5 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Outils IA / Éditeurs
+.claude/
+.windsurf/
+
+
 # dependencies
 /node_modules
 /.pnp
@@ -9,6 +14,7 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+
 
 # testing
 /coverage
@@ -33,7 +39,6 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 .env.local
-.env.example
 
 # vercel
 .vercel
@@ -41,3 +46,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+

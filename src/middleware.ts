@@ -16,6 +16,9 @@ export default auth((req) => {
   return NextResponse.next()
 })
 
+// FORCE NEXT.JS A UTILISER LE RUNTIME NODE.JS COMPLET PLUTÔT QUE L'EDGE
+export const runtime = "nodejs";
+
 export const config = {
   matcher: ["/admin/:path*", "/profile/edit"],
 }
