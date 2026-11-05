@@ -16,15 +16,15 @@ Le développeur 4 est responsable de la consultation publique des freelances et 
 | Tests | `src/features/search/queries.test.ts` et `src/features/freelance/queries.test.ts` | Vérifier les filtres et le chargement du profil. |
 | Revue de code | `.github/pull_request_template.md` | Fournir une checklist commune pour les pull requests. |
 
-Les requêtes de lecture sont dans des fichiers `queries.ts`. Elles ne remplacent pas les Server Actions prévues pour le développeur 5 : `searchFreelances` et `updateFreelanceProfile` restent dans son périmètre. Les pages actuelles peuvent ainsi fonctionner sans importer un fichier d'action qui n'existe pas encore dans la branche `develop` de départ.
+Les requêtes de lecture du MVP sont dans des fichiers `queries.ts`. Elles ne remplacent pas les Server Actions prévues pour le développeur 5 : `searchFreelances` et `updateFreelanceProfile` restent dans son périmètre. Les pages de cette branche peuvent ainsi fonctionner sans importer un fichier d'action qui n'existe pas encore dans la branche `develop` de départ.
 
 ### Règles fonctionnelles appliquées
 
 - La recherche ne montre que les comptes `FREELANCE` dont le statut est `VALIDATE`.
-- Les villes proposées viennent des profils publiés présents dans la base. Le cadrage cite Brazzaville et Pointe-Noire comme exemples, mais ne fournit pas une liste exhaustive ; aucune liste supplémentaire n'est inventée ici.
+- Le filtre de ville utilise la liste fixe MVP explicitement illustrée dans le cadrage : Brazzaville et Pointe-Noire. Aucune autre ville n'est ajoutée.
 - Plusieurs métiers peuvent être cochés. Un profil est retenu s'il possède au moins un des métiers choisis (intersection partielle).
 - La fiche publique refuse les identifiants invalides, les comptes qui ne sont pas des freelances et les comptes qui ne sont pas encore validés (en attente ou bannis).
-- Une consultation de la fiche augmente `profileViews` d'une unité. Le mot de passe haché n'est jamais récupéré par la requête publique.
+- Une consultation de la fiche augmente `profileViews` d'une unité. La requête publique ne récupère que les champs nécessaires à la fiche ; le mot de passe et l'adresse e-mail de connexion ne sont pas sélectionnés.
 - Le profil est rendu à chaque requête (`force-dynamic` et `revalidate = 0`) afin de refléter rapidement une modération ou une évolution des vues.
 - Les cartes n'utilisent pas d'images distantes. Leur taille ne dépend donc pas du chargement d'une image et leur mise en page reste stable.
 
@@ -74,7 +74,124 @@ git branch --show-current
 git remote -v
 ```
 
-La branche attendue est `feature/dev4-recherche-profils` et `origin` doit pointer vers le dépôt BonCop. Tu peux passer directement à la préparation de PostgreSQL. Les commandes `git clone` ci-dessus servent uniquement à repartir d'une copie neuve du dépôt distant.
+La branche attendue est `feature/dev4-recherche-profils` et `origin` doit pointer vers `https://github.com/sun123isa/boncop.git`.
+
+- Si tu souhaites travailler directement dans le dossier extrait, tu peux passer à la préparation de PostgreSQL.
+- **Si tu as déjà un clone BonCop sur ton ordinateur et que tu veux conserver ce dossier comme projet principal, ne décompresse surtout pas l'archive par-dessus.** Suis la procédure de la section 3.1 pour envoyer la branche D4 sur GitHub puis la récupérer dans ton clone existant.
+
+Les commandes `git clone` ci-dessus servent uniquement à repartir d'une copie neuve du dépôt distant.
+
+### 3.1 Tu as déjà ton propre clone BonCop : intégrer le travail D4 sans écraser ton projet
+
+Cette méthode est recommandée si tu travailles déjà dans un dossier `boncop` et que tu veux d'abord faire un `git pull` pour récupérer les derniers changements de l'équipe. Elle conserve ton dossier existant et utilise l'archive D4 comme une source séparée.
+
+**Étape A — Ne pas écraser tes changements locaux**
+
+Dans le terminal, ouvre le dossier de ton clone habituel (pas le dossier de l'archive) :
+
+```bash
+cd "C:/chemin/vers/ton/boncop"
+git status
+```
+
+- Si Git indique `working tree clean`, tu peux continuer.
+- Si des fichiers sont modifiés ou non suivis, sauvegarde ton travail avant de continuer : fais un commit si ces changements sont prêts, ou mets-les de côté avec `git stash push -u -m "avant integration D4"`. Ne supprime pas ces fichiers et ne lance pas de commande de réinitialisation (`git reset --hard`, `git clean -fd`).
+
+**Étape B — Mettre `develop` à jour dans ton clone habituel**
+
+```bash
+git switch develop
+git pull --ff-only origin develop
+git branch sauvegarde/develop-avant-dev4
+git fetch origin
+```
+
+Explications :
+
+- `git switch develop` se place sur la branche commune de l'équipe.
+- `git pull --ff-only origin develop` récupère les nouveaux commits de GitHub sans créer de commit de fusion inattendu. Si cette commande échoue, arrête-toi et demande une vérification ; ne force pas la mise à jour.
+- `git branch sauvegarde/develop-avant-dev4` crée un repère local sur l'état de `develop` avant l'intégration D4. Cette commande ne copie et ne supprime aucun fichier.
+- `git fetch origin` actualise les références des branches présentes sur GitHub.
+
+**Étape C — Envoyer uniquement la branche D4 depuis l'archive**
+
+Décompresse `boncop-dev4-mvp.zip` dans un dossier séparé, par exemple `C:/projets/boncop-dev4-mvp`. N'extrais pas son contenu dans ton clone habituel. Ouvre un deuxième terminal (ou déplace-toi dans ce dossier) :
+
+```bash
+cd "C:/projets/boncop-dev4-mvp"
+git status
+git branch --show-current
+git push -u origin feature/dev4-recherche-profils
+```
+
+Vérifie que la branche affichée est `feature/dev4-recherche-profils` avant le `git push`. Cette commande envoie cette branche sur GitHub ; elle ne met à jour ni `develop` ni `main`. Elle ne modifie pas les fichiers de ton clone habituel. Si Git indique que la branche existe déjà sur GitHub et refuse le push, **n'utilise pas `--force`** : arrête-toi et vérifie avec le responsable du dépôt.
+
+**Étape D — Récupérer la branche D4 dans ton clone habituel**
+
+Retourne dans le terminal du clone d'origine :
+
+```bash
+cd "C:/chemin/vers/ton/boncop"
+git fetch origin
+git switch -c feature/dev4-recherche-profils --track origin/feature/dev4-recherche-profils
+git merge origin/develop
+```
+
+La première commande actualise les branches distantes ; la deuxième crée ta branche locale de travail à partir de la branche D4 publiée sur GitHub ; la troisième intègre les nouveautés récentes de `develop` dans la branche D4.
+
+Si Git dit que la branche locale `feature/dev4-recherche-profils` existe déjà, ne relance pas `git switch -c`. Utilise plutôt :
+
+```bash
+git switch feature/dev4-recherche-profils
+git pull --ff-only origin feature/dev4-recherche-profils
+git merge origin/develop
+```
+
+**Étape E — Que faire si Git signale un conflit ?**
+
+Un conflit signifie que deux branches ont modifié la même zone d'un fichier. Vérifie les fichiers concernés :
+
+```bash
+git status
+```
+
+Ouvre chaque fichier signalé dans VS Code. Les marqueurs `<<<<<<<`, `=======` et `>>>>>>>` délimitent les deux versions. Garde la bonne version ou combine les deux en respectant le travail des développeurs concernés, puis supprime les marqueurs. Après vérification :
+
+```bash
+git add chemin/du/fichier-resolu
+git commit
+```
+
+Si tu ne sais pas résoudre un conflit, tu peux annuler uniquement la fusion en cours avec :
+
+```bash
+git merge --abort
+```
+
+Cela annule la tentative de fusion, pas les commits déjà présents sur les branches. Demande ensuite une revue avant de recommencer. Ne remplace jamais tout un fichier par ta version sans vérifier le travail de l'autre développeur.
+
+**Étape F — Vérifier et publier la branche**
+
+Sur ta branche D4, lance les contrôles disponibles :
+
+```bash
+npm ci
+npm test
+npm run lint
+npx tsc --noEmit
+npm run build
+```
+
+Puis vérifie l'état Git et pousse la branche :
+
+```bash
+git status
+git push
+```
+
+Si les contrôles sont satisfaisants, ouvre ensuite une pull request de `feature/dev4-recherche-profils` vers `develop` en suivant la section 10.
+
+**À retenir :** faire `git pull` sur `develop` avant de récupérer la branche D4 ne complique pas le travail. C'est même la bonne séquence : on met d'abord à jour la base commune, puis on intègre ces nouveautés dans la branche de fonctionnalité. Le seul point important est de partir d'un dossier propre et de ne jamais décompresser l'archive par-dessus ton clone existant.
 
 ## 4. Préparer PostgreSQL et les variables d'environnement
 
@@ -258,9 +375,9 @@ npm test
 npm run build
 ```
 
-Ces commandes contrôlent respectivement le style du code, les types TypeScript, les tests automatisés et la compilation de production. Le build doit être exécuté avec un `DATABASE_URL` valide et une base accessible si les modules serveur interrogent PostgreSQL pendant la compilation.
+Ces commandes contrôlent respectivement le style du code, les types TypeScript, les tests automatisés et la compilation de production. Le fichier `vitest.config.ts` configure l'alias `@/` utilisé par les tests. Le build doit être exécuté avec un `DATABASE_URL` valide et une base accessible si les modules serveur interrogent PostgreSQL pendant la compilation.
 
-**État des vérifications pendant la préparation de cette branche :** les dépendances npm n'étaient pas installées et le registre npm était inaccessible depuis l'environnement de travail (`EAI_AGAIN` / erreur DNS). La syntaxe TypeScript/TSX des sept fichiers D4 a été contrôlée et les deux fonctions de requête ont passé des essais isolés avec Prisma simulé. En revanche, Vitest, ESLint, le contrôle complet des types et le build Next.js n'ont pas pu être exécutés. Après `npm ci`, il faut donc lancer réellement les quatre commandes ci-dessus avant de demander la fusion.
+**État des vérifications pendant la préparation de cette branche :** l'installation des dépendances (`npm ci`) a expiré dans l'environnement de travail. La syntaxe des huit fichiers TypeScript/TSX liés au travail D4 a été contrôlée, et les fonctions de requête ont été exécutées avec Prisma simulé pour vérifier les villes du MVP, les filtres, le statut du profil, le compteur de vues et les champs publics retournés. En revanche, la suite Vitest, ESLint, le contrôle complet des types et le build Next.js n'ont pas pu être exécutés sur cette version finale. Après une installation réussie des dépendances, il faut lancer les quatre commandes ci-dessus avant de demander la fusion.
 
 Faire aussi une vérification manuelle dans le navigateur :
 
@@ -308,7 +425,7 @@ git pull origin develop
 git checkout -b feature/dev4-recherche-profils
 ```
 
-Si tu utilises l'archive préparée, cette branche existe déjà et contient les six commits du travail D4. Vérifie simplement que tu es dessus :
+Si tu utilises l'archive préparée, cette branche existe déjà et contient déjà la branche et les commits séparés du travail D4. Vérifie simplement que tu es dessus :
 
 ```bash
 git branch --show-current
