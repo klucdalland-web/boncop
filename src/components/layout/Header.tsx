@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { LinkButton } from "@/components/ui/LinkButton";
+import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/cn";
+
+const NAV_LINKS = [
+  { href: "/", label: "Accueil" },
+  { href: "/search", label: "Explorer" },
+  { href: "/admin", label: "Admin" },
+  { href: "/about", label: "À propos" },
+] as const;
 
 /**
  * Client Component volontairement : lire la session côté serveur (auth())
@@ -11,49 +19,159 @@ import { LinkButton } from "@/components/ui/LinkButton";
  */
 export function Header() {
   const { status } = useSession();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!mobileOpen) {
+      return;
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setMobileOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [mobileOpen]);
+
+  const closeMobileMenu = () => setMobileOpen(false);
 
   return (
-    <header className="border-b border-line-200 bg-surface-0">
-      <nav
-        aria-label="Navigation principale"
-        className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3"
-      >
+    <header className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="inline-flex min-h-11 items-center text-xl font-bold text-brand-600"
+          aria-label="BonCop, accueil"
+          className="group flex min-h-11 items-center gap-2.5"
+          onClick={closeMobileMenu}
         >
-          BonCop
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-brand-500 to-violet text-sm font-extrabold text-white shadow-glow transition group-hover:scale-105">
+            B
+          </span>
+          <span className="text-lg font-extrabold tracking-tight text-slate-900">
+            BonCop
+          </span>
         </Link>
 
-        <ul className="flex items-center gap-2">
-          <li>
+        <nav
+          aria-label="Navigation principale"
+          className="hidden items-center gap-8 text-sm font-medium md:flex"
+        >
+          {NAV_LINKS.map((link) => (
             <Link
-              href="/search"
-              className="inline-flex min-h-11 items-center px-3 text-sm font-semibold text-ink-700 hover:text-brand-600"
+              key={link.href}
+              href={link.href}
+              className="nav-link inline-flex min-h-11 items-center text-slate-600 transition hover:text-slate-900"
             >
-              Recherche
+              {link.label}
             </Link>
-          </li>
-          <li className="hidden sm:block">
-            <Link
-              href="/about"
-              className="inline-flex min-h-11 items-center px-3 text-sm font-semibold text-ink-700 hover:text-brand-600"
-            >
-              À propos
-            </Link>
-          </li>
-          <li>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="hidden items-center gap-2 sm:flex">
             {status === "authenticated" ? (
-              <LinkButton href="/profile/edit">Mon profil</LinkButton>
+              <Link
+                href="/profile/edit"
+                className="inline-flex min-h-11 items-center rounded-full bg-linear-to-r from-brand-600 to-violet px-4 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-glow"
+              >
+                Mon profil
+              </Link>
             ) : (
-              // Pendant "loading", on affiche "Connexion" : largeur stable, pas de CLS
-              <LinkButton href="/login" variant="secondary">
-                Connexion
-              </LinkButton>
+              <>
+                <Link
+                  href="/login"
+                  className="inline-flex min-h-11 items-center px-3 text-sm font-semibold text-slate-700 transition hover:text-brand-600"
+                >
+                  Connexion
+                </Link>
+                <Link
+                  href="/register"
+                  className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-linear-to-r from-brand-600 to-violet px-4 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-glow"
+                >
+                  Rejoindre
+                  <span aria-hidden="true" className="text-[10px]">
+                    →
+                  </span>
+                </Link>
+              </>
             )}
-          </li>
-        </ul>
-      </nav>
+          </div>
+
+          <button
+            ref={menuButtonRef}
+            type="button"
+            aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
+            data-open={mobileOpen ? "true" : "false"}
+            onClick={() => setMobileOpen((open) => !open)}
+            className="menu-toggle flex h-11 w-11 flex-col items-center justify-center gap-1.5 rounded-lg transition hover:bg-slate-100 md:hidden"
+          >
+            <span aria-hidden="true" className="hamburger-line" />
+            <span aria-hidden="true" className="hamburger-line" />
+            <span aria-hidden="true" className="hamburger-line" />
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="mobile-menu"
+        aria-hidden={!mobileOpen}
+        className={cn(
+          "mobile-menu border-t border-slate-200/60 bg-white md:hidden",
+          mobileOpen && "open",
+        )}
+      >
+        <nav aria-label="Navigation mobile" className="flex flex-col gap-1 px-4 py-3">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={closeMobileMenu}
+              className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+            >
+              {link.label}
+            </Link>
+          ))}
+
+          <div className="mt-2 flex flex-col gap-2 border-t border-slate-200 pt-3">
+            {status === "authenticated" ? (
+              <Link
+                href="/profile/edit"
+                onClick={closeMobileMenu}
+                className="inline-flex min-h-11 items-center justify-center rounded-full bg-linear-to-r from-brand-600 to-violet px-4 text-sm font-semibold text-white transition"
+              >
+                Mon profil
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  onClick={closeMobileMenu}
+                  className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-200 px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                >
+                  Connexion
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={closeMobileMenu}
+                  className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full bg-linear-to-r from-brand-600 to-violet px-4 text-sm font-semibold text-white transition"
+                >
+                  Rejoindre
+                  <span aria-hidden="true" className="text-[10px]">
+                    →
+                  </span>
+                </Link>
+              </>
+            )}
+          </div>
+        </nav>
+      </div>
     </header>
   );
 }

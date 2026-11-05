@@ -8,7 +8,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
 // Dans src/app/layout.tsx :
 //
-// <html lang="fr" className={`${jakarta.variable} ${jetbrains.variable}`}>
+// <html lang="fr" className={`${inter.variable} ${jetbrains.variable}`}>
 //   <body>
 //     <Providers>
 //       <Header />
