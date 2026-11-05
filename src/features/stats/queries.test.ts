@@ -31,7 +31,7 @@ describe("getPlatformStats", () => {
     vi.restoreAllMocks();
   });
 
-  it("compte uniquement les freelances validés et cumule toutes les vues", async () => {
+  it("compte et cumule uniquement les freelances validés", async () => {
     vi.mocked(prisma.user.count).mockResolvedValue(12);
     vi.mocked(prisma.user.aggregate).mockResolvedValue(
       aggregateResult(3456),
@@ -49,6 +49,10 @@ describe("getPlatformStats", () => {
       },
     });
     expect(prisma.user.aggregate).toHaveBeenCalledWith({
+      where: {
+        role: "FREELANCE",
+        validated: "VALIDATE",
+      },
       _sum: {
         profileViews: true,
       },
