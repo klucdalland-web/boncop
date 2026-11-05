@@ -1,60 +1,59 @@
+"use client";
+
 import Link from "next/link";
-import { HeaderMobileMenu } from "./HeaderMobileMenu";
+import { useSession } from "next-auth/react";
+import { LinkButton } from "@/components/ui/LinkButton";
 
-const NAV_LINKS = [
-  { href: "/search", label: "Trouver un freelance" },
-  { href: "/#comment", label: "Comment ça marche" },
-  { href: "/about", label: "À propos" },
-] as const;
-
+/**
+ * Client Component volontairement : lire la session côté serveur (auth())
+ * dans le layout rendrait TOUTES les pages dynamiques et casserait
+ * l'ISR de / et le SSG de /about. La session est donc lue côté client.
+ */
 export function Header() {
+  const { status } = useSession();
+
   return (
-    <header className="sticky top-0 z-40 border-b border-line-200 bg-surface-0">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
+    <header className="border-b border-line-200 bg-surface-0">
+      <nav
+        aria-label="Navigation principale"
+        className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3"
+      >
         <Link
           href="/"
-          className="flex items-center gap-2 rounded-sm text-2xl font-bold tracking-tight text-ink-900"
+          className="inline-flex min-h-11 items-center text-xl font-bold text-brand-600"
         >
-          <span
-            aria-hidden="true"
-            className="grid h-8 w-8 place-items-center rounded-sm bg-brand-600 text-base text-white"
-          >
-            B
-          </span>
           BonCop
         </Link>
 
-        <nav
-          aria-label="Navigation principale"
-          className="hidden items-center gap-1 md:flex"
-        >
-          {NAV_LINKS.map((link) => (
+        <ul className="flex items-center gap-2">
+          <li>
             <Link
-              key={link.href}
-              href={link.href}
-              className="rounded-sm px-3 py-2 text-sm font-semibold text-ink-700 hover:text-brand-600"
+              href="/search"
+              className="inline-flex min-h-11 items-center px-3 text-sm font-semibold text-ink-700 hover:text-brand-600"
             >
-              {link.label}
+              Recherche
             </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-2">
-          <Link
-            href="/login"
-            className="hidden h-11 items-center rounded-sm px-4 text-sm font-semibold text-ink-700 hover:text-brand-600 md:inline-flex"
-          >
-            Se connecter
-          </Link>
-          <Link
-            href="/register"
-            className="hidden h-11 items-center rounded-sm border border-brand-600 px-4 text-sm font-semibold text-brand-600 transition-colors hover:bg-brand-600 hover:text-white sm:inline-flex"
-          >
-            Créer mon CV
-          </Link>
-          <HeaderMobileMenu />
-        </div>
-      </div>
+          </li>
+          <li className="hidden sm:block">
+            <Link
+              href="/about"
+              className="inline-flex min-h-11 items-center px-3 text-sm font-semibold text-ink-700 hover:text-brand-600"
+            >
+              À propos
+            </Link>
+          </li>
+          <li>
+            {status === "authenticated" ? (
+              <LinkButton href="/profile/edit">Mon profil</LinkButton>
+            ) : (
+              // Pendant "loading", on affiche "Connexion" : largeur stable, pas de CLS
+              <LinkButton href="/login" variant="secondary">
+                Connexion
+              </LinkButton>
+            )}
+          </li>
+        </ul>
+      </nav>
     </header>
   );
 }
