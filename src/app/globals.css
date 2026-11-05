@@ -46,7 +46,7 @@
 /* Tokens de composants (alias sémantiques) */
 :root {
   --focus-ring: 0 0 0 2px var(--color-surface-0), 0 0 0 4px var(--color-brand-600);
-  --control-height-sm: 36px;
+  --control-height-sm: 44px;
   --control-height-md: 44px;
   --control-height-lg: 52px;
   --skeleton-base: #ECEDEE;
