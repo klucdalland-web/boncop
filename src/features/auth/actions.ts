@@ -2,7 +2,7 @@
 
 import bcrypt from "bcryptjs"
 import { z } from "zod"
-import { prisma } from "@/db/prisma"
+import prisma from "@/db/prisma"
 import { auth } from "@/auth"
 
 const RegisterSchema = z.object({

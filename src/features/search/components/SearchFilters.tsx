@@ -89,8 +89,8 @@ export function SearchFilters({
             </div>
           ) : (
             <p className="rounded-md bg-surface-100 p-3 text-sm text-ink-500">
-              Aucun métier n'est encore disponible. Les filtres seront proposés
-              dès que l'administrateur aura ajouté des métiers.
+              Aucun métier n&apos;est encore disponible. Les filtres seront proposés
+              dès que l&apos;administrateur aura ajouté des métiers.
             </p>
           )}
         </fieldset>

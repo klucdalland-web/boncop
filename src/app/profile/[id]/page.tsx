@@ -111,7 +111,7 @@ export default async function FreelanceProfilePage({
             </ul>
           ) : (
             <p className="mt-5 text-sm text-ink-500">
-              Aucun métier n'a encore été renseigné.
+              Aucun métier n&apos;a encore été renseigné.
             </p>
           )}
         </header>
@@ -129,7 +129,7 @@ export default async function FreelanceProfilePage({
               </div>
             ) : (
               <p className="mt-4 text-sm leading-6 text-ink-500">
-                Ce freelance n'a pas encore ajouté de présentation à son profil.
+                Ce freelance n&apos;a pas encore ajouté de présentation à son profil.
               </p>
             )}
           </section>
@@ -173,7 +173,7 @@ export default async function FreelanceProfilePage({
 
               {!phone && !whatsapp ? (
                 <p className="text-sm leading-6 text-ink-500">
-                  Aucune information de contact n'est disponible pour le moment.
+                 Aucune information de contact n&apos;est disponible pour le moment.
                 </p>
               ) : null}
             </div>

@@ -172,7 +172,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             </h3>
             <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-ink-500">
               Essayez une autre ville ou retirez un métier de la sélection.
-              Seuls les profils validés par l'administration sont affichés.
+              Seuls les profils validés par l&apos;administration sont affichés..
             </p>
             <Link
               href="/search"
