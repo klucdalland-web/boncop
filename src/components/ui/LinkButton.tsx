@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 type Variant = "primary" | "secondary" | "ghost";
@@ -9,7 +10,7 @@ type LinkButtonProps = {
   variant?: Variant;
   size?: Size;
   className?: string;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 const variants: Record<Variant, string> = {
@@ -24,6 +25,15 @@ const sizes: Record<Size, string> = {
   lg: "min-h-[52px] px-6 text-base",
 };
 
+/**
+ * Lien stylé comme un bouton, à réserver à la navigation.
+ * Pour une action (soumission, mutation, ouverture de modale), utiliser `Button`.
+ *
+ * Exemple :
+ * <LinkButton href="/search" variant="primary" size="lg">
+ *   Trouver un freelance
+ * </LinkButton>
+ */
 export function LinkButton({
   href,
   variant = "primary",
