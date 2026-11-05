@@ -1,26 +1,97 @@
 @import "tailwindcss";
 
+@theme {
+  /* Marque */
+  --color-brand-100: #E3F5EA;
+  --color-brand-400: #1DBF73;
+  --color-brand-600: #0C7C43;
+  --color-brand-700: #09663A;
+  --color-brand-800: #075230;
+  --color-accent-400: #FFB33E;
+
+  /* Neutres */
+  --color-ink-900: #222325;
+  --color-ink-700: #404145;
+  --color-ink-500: #62646A;
+  --color-ink-400: #74767E;
+  --color-line-200: #DADBDD;
+  --color-surface-100: #F5F5F5;
+  --color-surface-0: #FFFFFF;
+
+  /* Sémantiques */
+  --color-danger-bg: #FDECEC;
+  --color-danger-fg: #C62828;
+  --color-warning-bg: #FFF4E0;
+  --color-warning-fg: #8A4B00;
+  --color-success-bg: #E3F5EA;
+  --color-success-fg: #075230;
+  --color-info-bg: #E8F1FD;
+  --color-info-fg: #1A4E9B;
+
+  /* Polices (variables injectées par next/font) */
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* Rayons */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Ombres */
+  --shadow-card: 0 1px 3px rgb(34 35 37 / 0.08);
+  --shadow-raised: 0 8px 24px rgb(34 35 37 / 0.12);
+  --shadow-modal: 0 16px 48px rgb(34 35 37 / 0.20);
+}
+
+/* Tokens de composants (alias sémantiques) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --focus-ring: 0 0 0 2px var(--color-surface-0), 0 0 0 4px var(--color-brand-600);
+  --control-height-sm: 36px;
+  --control-height-md: 44px;
+  --control-height-lg: 52px;
+  --skeleton-base: #ECEDEE;
+  --skeleton-shine: #F7F7F8;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-surface-0);
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Squelette de chargement : dimensions du contenu final, CLS ≈ 0 */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-base) 25%,
+    var(--skeleton-shine) 50%,
+    var(--skeleton-base) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes skeleton-shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .skeleton {
+    animation: none;
+    background: var(--skeleton-base);
+  }
 }
