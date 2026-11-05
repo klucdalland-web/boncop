@@ -41,7 +41,7 @@ export function Select({
 
   return (
     <div className={cn("flex flex-col gap-1", containerClassName)}>
-      <label htmlFor={selectId} className="text-sm font-semibold text-ink-700">
+      <label htmlFor={selectId} className="text-sm font-semibold text-slate-700">
         {label}
       </label>
       <select
@@ -50,15 +50,16 @@ export function Select({
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy}
         className={cn(
-          "h-11 w-full rounded-sm border border-ink-400 bg-surface-0 px-3 text-base text-ink-900 focus:border-brand-600",
-          error && "border-danger-fg",
+          "h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 pr-9 text-sm text-slate-900 transition focus:border-brand-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-brand-100/70 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400",
+          error &&
+            "border-danger-fg focus:border-danger-fg focus:ring-danger-bg",
           className,
         )}
       >
         {children}
       </select>
       {hint ? (
-        <p id={hintId} className="text-sm text-ink-500">
+        <p id={hintId} className="text-sm text-slate-500">
           {hint}
         </p>
       ) : null}

@@ -14,10 +14,11 @@ export type LinkButtonProps = {
 };
 
 const variants: Record<LinkButtonVariant, string> = {
-  primary: "bg-brand-600 text-surface-0 hover:bg-brand-700 active:bg-brand-800",
+  primary:
+    "bg-linear-to-r from-brand-600 to-violet text-white shadow-soft hover:-translate-y-0.5 hover:shadow-glow active:translate-y-0",
   secondary:
-    "bg-surface-0 text-ink-700 border border-ink-400 hover:bg-surface-100",
-  ghost: "text-brand-600 hover:bg-brand-100",
+    "border border-slate-200 bg-white text-slate-700 shadow-soft hover:-translate-y-0.5 hover:bg-slate-50",
+  ghost: "text-slate-700 hover:bg-slate-100",
 };
 
 const sizes: Record<LinkButtonSize, string> = {
@@ -45,7 +46,7 @@ export function LinkButton({
     <Link
       href={href}
       className={cn(
-        "inline-flex items-center justify-center rounded-sm font-semibold transition-colors",
+        "inline-flex items-center justify-center rounded-full font-semibold transition",
         variants[variant],
         sizes[size],
         className,

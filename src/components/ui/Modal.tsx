@@ -97,25 +97,25 @@ export function Modal({
       aria-modal="true"
       aria-labelledby={titleId}
       className={cn(
-        "fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none border-0 bg-transparent p-0 backdrop:bg-ink-900/60 sm:inset-auto sm:m-auto sm:h-auto sm:max-h-[calc(100dvh-2rem)] sm:w-[calc(100%-2rem)]",
+        "fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none border-0 bg-transparent p-0 backdrop:bg-slate-900/60 sm:inset-auto sm:m-auto sm:h-auto sm:max-h-[calc(100dvh-2rem)] sm:w-[calc(100%-2rem)]",
         SIZE_CLASSES[size],
       )}
     >
       <div
         className={cn(
-          "flex h-full flex-col bg-surface-0 p-6 sm:h-auto sm:rounded-lg sm:shadow-modal",
+          "flex h-full flex-col bg-white p-6 sm:h-auto sm:rounded-2xl sm:border sm:border-slate-200/80 sm:shadow-modal",
           className,
         )}
       >
-        <div className="mb-4 flex items-start justify-between gap-4">
-          <h2 id={titleId} className="text-xl font-semibold text-ink-900">
+        <div className="mb-4 flex items-start justify-between gap-4 border-b border-slate-100 pb-4">
+          <h2 id={titleId} className="text-xl font-semibold text-slate-900">
             {title}
           </h2>
           <button
             type="button"
             onClick={onClose}
             aria-label="Fermer"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-sm text-ink-700 hover:bg-surface-100"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
           >
             <svg
               aria-hidden="true"
