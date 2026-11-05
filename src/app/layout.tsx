@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Providers } from "@/components/layout/Providers";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -56,17 +57,19 @@ export default function RootLayout({
       className={`${jakarta.variable} ${jetbrains.variable} h-full`}
     >
       <body className="flex min-h-dvh flex-col bg-surface-0 font-sans text-ink-900 antialiased">
-        <a
-          href="#contenu"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-surface-0 focus:px-4 focus:py-2 focus:font-semibold focus:text-ink-900"
-        >
-          Aller au contenu
-        </a>
-        <Header />
-        <main id="contenu" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <Providers>
+          <a
+            href="#contenu"
+            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-surface-0 focus:px-4 focus:py-2 focus:font-semibold focus:text-ink-900"
+          >
+            Aller au contenu
+          </a>
+          <Header />
+          <main id="contenu" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
