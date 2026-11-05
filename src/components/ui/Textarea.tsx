@@ -54,7 +54,7 @@ export function Textarea({
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy}
         className={cn(
-          "w-full rounded-sm border border-ink-400 bg-surface-0 px-3 py-2 text-base text-ink-900 placeholder:text-ink-500 focus:border-brand-600",
+          "min-h-11 w-full rounded-sm border border-ink-400 bg-surface-0 px-3 py-2 text-base text-ink-900 placeholder:text-ink-500 focus:border-brand-600",
           error && "border-danger-fg",
           className,
         )}

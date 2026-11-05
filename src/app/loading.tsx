@@ -4,7 +4,7 @@ export default function Loading() {
   return (
     <SkeletonRegion label="Chargement de la page d'accueil">
       <section className="bg-brand-800">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
           <div className="max-w-3xl">
             <Skeleton className="h-10 w-full max-w-xl md:h-[52px]" />
             <Skeleton className="mt-4 h-7 w-full max-w-2xl" />
@@ -14,7 +14,7 @@ export default function Loading() {
       </section>
 
       <section className="border-b border-line-200 bg-surface-100">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 py-8 sm:grid-cols-3 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-8 sm:grid-cols-3 sm:px-6 lg:px-8">
           {[0, 1, 2].map((item) => (
             <div key={item} className="flex flex-col items-center">
               <Skeleton className="h-10 w-24" />
@@ -24,7 +24,7 @@ export default function Loading() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
         <Skeleton className="h-8 w-72 max-w-full" />
         <div className="mt-8 grid gap-8 md:grid-cols-3">
           {[0, 1, 2].map((item) => (
@@ -43,7 +43,7 @@ export default function Loading() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6 lg:px-8">
         <div className="rounded-lg bg-brand-100 px-6 py-12 sm:px-12">
           <div className="max-w-2xl">
             <Skeleton className="h-8 w-80 max-w-full" />

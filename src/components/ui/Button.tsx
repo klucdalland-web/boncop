@@ -8,16 +8,17 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
+  className?: string;
 };
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary:
-    "bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-800 disabled:hover:bg-surface-100",
+    "bg-brand-600 text-surface-0 hover:bg-brand-700 active:bg-brand-800 disabled:hover:bg-surface-100",
   secondary:
     "border border-ink-400 bg-surface-0 text-ink-700 hover:bg-surface-100 disabled:hover:bg-surface-100",
   ghost:
     "text-brand-600 hover:bg-brand-100 disabled:hover:bg-surface-100",
-  danger: "bg-danger-fg text-white hover:bg-danger-fg/90",
+  danger: "bg-danger-fg text-surface-0 hover:brightness-90",
 };
 
 const SIZE_CLASSES: Record<ButtonSize, string> = {
@@ -56,7 +57,7 @@ export function Button({
         className,
       )}
     >
-      <span className={loading ? "invisible" : undefined}>{children}</span>
+      <span className={loading ? "opacity-0" : undefined}>{children}</span>
       {loading ? (
         <span className="absolute inset-0 grid place-items-center">
           <svg
