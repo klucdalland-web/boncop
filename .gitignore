@@ -37,7 +37,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+.env
 .env.local
 
 # vercel
@@ -53,3 +53,9 @@ boncop-accueil.html
 
 # fichiers générés par Next.js (agents)
 AGENTS.md
+
+# notes de travail
+issues-dev3.md
+
+# dossier de travail local
+ajout/

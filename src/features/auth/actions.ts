@@ -2,7 +2,7 @@
 
 import bcrypt from "bcryptjs"
 import { z } from "zod"
-import prisma from "@/db/prisma"
+import prisma  from "@/db/prisma"
 import { auth } from "@/auth"
 
 const RegisterSchema = z.object({
@@ -10,12 +10,12 @@ const RegisterSchema = z.object({
   password: z
     .string()
     .min(8, "Le mot de passe doit contenir au moins 8 caractères"),
-  prenom: z.string().min(1).optional(),
-  nom: z.string().min(1).optional(),
-  telephone: z.string().min(6).optional(),
-  whatsapp: z.string().min(6).optional(),
-  ville: z.string().min(1).optional(),
-  quartier: z.string().min(1).optional(),
+    prenom: z.string().min(1).optional(),
+    nom: z.string().min(1).optional(),
+    telephone: z.string().min(6).optional(),
+    whatsapp: z.string().min(6).optional(),
+    ville: z.string().min(1).optional(),
+    quartier: z.string().min(1).optional(),
 })
 
 export type RegisterInput = z.infer<typeof RegisterSchema>
