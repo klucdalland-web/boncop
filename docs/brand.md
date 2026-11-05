@@ -253,7 +253,7 @@ const jetbrains = JetBrains_Mono({
 
 ## 6. Tokens par composant (`src/components/ui/`)
 
-Règles communes : composants **génériques** (aucune logique métier, aucun import de `features/`), props typées, `className` fusionnable (`cn()`), accessibilité native (éléments HTML sémantiques d'abord, ARIA ensuite).
+Règles communes : composants **génériques** (aucune logique métier, aucun import de `features/`), props typées, `className` fusionnable (`cn()` de `@/lib/cn`), accessibilité native (éléments HTML sémantiques d'abord, ARIA ensuite).
 
 ### Button
 
@@ -264,7 +264,7 @@ Règles communes : composants **génériques** (aucune logique métier, aucun im
 | `ghost` | transparent | `brand-600` | aucune | fond `brand-100` (texte `brand-600` : 4,65:1 ✔) |
 | `danger` | `danger-fg` | blanc | aucune | plus foncé |
 
-Tailles : `sm` 36 px, `md` 44 px (défaut), `lg` 52 px. Rayon `radius-sm`. Police `text-sm` / 600 (`text-base` en `lg`). Padding horizontal `space-4` (`space-6` en `lg`). État `disabled` : fond `surface-100`, texte `ink-500`, `cursor-not-allowed`. État `loading` : spinner, `aria-busy="true"`, largeur inchangée (pas de CLS).
+Tailles : `sm` 44 px, `md` 44 px (défaut), `lg` 52 px. Rayon `radius-sm`. Police `text-sm` / 600 (`text-base` en `lg`). Padding horizontal `space-4` (`space-6` en `lg`). État `disabled` : fond `surface-100`, texte `ink-500`, `cursor-not-allowed`. État `loading` : spinner, `aria-busy="true"`, largeur inchangée (pas de CLS).
 
 ### Input / Textarea / Select
 
@@ -317,7 +317,7 @@ Principe : **le squelette reprend exactement les dimensions du contenu final** p
 
 ```tsx
 // src/components/ui/Skeleton.tsx
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/cn";
 
 type SkeletonProps = {
   className?: string;
