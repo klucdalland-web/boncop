@@ -8,8 +8,8 @@ export type CardProps = {
 };
 
 /**
- * Carte générique. `interactive` ajoute l'ombre de survol sans déplacement
- * (évite tout CLS), pour une carte cliquable ou un lien.
+ * Carte générique. `interactive` ajoute une légère élévation au survol,
+ * pour une carte cliquable ou un lien.
  *
  * Exemple :
  * <Card interactive><ProfileSummary /></Card>
@@ -22,8 +22,9 @@ export function Card({
   return (
     <div
       className={cn(
-        "rounded-md border border-line-200 bg-surface-0 p-4 shadow-card",
-        interactive && "transition-shadow hover:shadow-raised",
+        "rounded-2xl border border-slate-200/80 bg-white p-6 shadow-soft",
+        interactive &&
+          "transition duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-lift",
         className,
       )}
     >

@@ -15,11 +15,11 @@ export type BadgeProps = {
 };
 
 const VARIANT_CLASSES: Record<BadgeVariant, string> = {
-  success: "bg-success-bg text-success-fg",
-  warning: "bg-warning-bg text-warning-fg",
-  danger: "bg-danger-bg text-danger-fg",
-  info: "bg-info-bg text-info-fg",
-  neutral: "bg-surface-100 text-ink-700",
+  success: "bg-success-bg text-success-fg ring-success-fg/20",
+  warning: "bg-warning-bg text-warning-fg ring-warning-fg/20",
+  danger: "bg-danger-bg text-danger-fg ring-danger-fg/20",
+  info: "bg-info-bg text-info-fg ring-info-fg/20",
+  neutral: "bg-slate-100 text-slate-700 ring-slate-200",
 };
 
 /**
@@ -37,7 +37,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold",
+        "inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold ring-1 ring-inset",
         VARIANT_CLASSES[variant],
         className,
       )}

@@ -32,34 +32,38 @@ export function ErrorState({
     <div
       role="alert"
       className={cn(
-        "rounded-md border border-danger-fg bg-danger-bg p-6",
+        "rounded-2xl border border-danger-fg/20 bg-danger-bg p-6 shadow-soft",
         className,
       )}
     >
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        className="h-6 w-6 text-danger-fg"
-      >
-        <path d="M12 9v4M12 17h.01M10.3 3.9 2.4 17.5A1.8 1.8 0 0 0 4 20h16a1.8 1.8 0 0 0 1.6-2.5L13.7 3.9a1.8 1.8 0 0 0-3.4 0Z" />
-      </svg>
-      <h2 className="mt-3 text-xl font-semibold text-ink-900">{title}</h2>
-      <p className="mt-2 text-base text-ink-700">{description}</p>
+      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-danger-fg shadow-soft">
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          className="h-5 w-5"
+        >
+          <path d="M12 9v4M12 17h.01M10.3 3.9 2.4 17.5A1.8 1.8 0 0 0 4 20h16a1.8 1.8 0 0 0 1.6-2.5L13.7 3.9a1.8 1.8 0 0 0-3.4 0Z" />
+        </svg>
+      </div>
+      <h2 className="mt-4 text-xl font-semibold text-slate-900">{title}</h2>
+      <p className="mt-2 text-sm leading-relaxed text-slate-600">
+        {description}
+      </p>
       <div className="mt-4 flex flex-wrap items-center gap-2">
         {onRetry ? <Button onClick={onRetry}>Réessayer</Button> : null}
         <Link
           href="/"
-          className="inline-flex h-11 items-center rounded-sm px-4 text-sm font-semibold text-brand-600 hover:bg-brand-100"
+          className="inline-flex h-11 items-center rounded-full px-4 text-sm font-semibold text-brand-600 transition hover:bg-white"
         >
           Retour à l&apos;accueil
         </Link>
       </div>
       {digest ? (
-        <p className="mt-4 font-mono text-xs text-ink-500">
+        <p className="mt-4 font-mono text-xs text-slate-500">
           Référence : {digest}
         </p>
       ) : null}

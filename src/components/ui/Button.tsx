@@ -13,22 +13,21 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary:
-    "bg-brand-600 text-surface-0 hover:bg-brand-700 active:bg-brand-800 disabled:hover:bg-surface-100",
+    "bg-linear-to-r from-brand-600 to-violet text-white shadow-soft hover:-translate-y-0.5 hover:shadow-glow active:translate-y-0",
   secondary:
-    "border border-ink-400 bg-surface-0 text-ink-700 hover:bg-surface-100 disabled:hover:bg-surface-100",
-  ghost:
-    "text-brand-600 hover:bg-brand-100 disabled:hover:bg-surface-100",
-  danger: "bg-danger-fg text-surface-0 hover:brightness-90",
+    "border border-slate-200 bg-white text-slate-700 shadow-soft hover:-translate-y-0.5 hover:bg-slate-50",
+  ghost: "text-slate-700 hover:bg-slate-100",
+  danger: "bg-danger-fg text-white shadow-soft hover:brightness-90",
 };
 
 const SIZE_CLASSES: Record<ButtonSize, string> = {
   sm: "h-11 px-4 text-sm",
-  md: "h-11 px-4 text-sm",
+  md: "h-11 px-5 text-sm",
   lg: "h-[52px] px-6 text-base",
 };
 
 /**
- * Bouton générique BonCop (tokens de `docs/brand.md`, section 6).
+ * Bouton générique BonCop, style pilule avec dégradé indigo.
  *
  * Exemple :
  * <Button variant="primary" size="md" onClick={save}>Enregistrer</Button>
@@ -51,7 +50,7 @@ export function Button({
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       className={cn(
-        "relative inline-flex items-center justify-center gap-2 rounded-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:border-transparent disabled:bg-surface-100 disabled:text-ink-500",
+        "relative inline-flex items-center justify-center gap-2 rounded-full font-semibold transition disabled:cursor-not-allowed disabled:border-transparent disabled:bg-none disabled:bg-slate-100 disabled:text-slate-400 disabled:shadow-none disabled:hover:translate-y-0",
         VARIANT_CLASSES[variant],
         SIZE_CLASSES[size],
         className,
