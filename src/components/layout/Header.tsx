@@ -3,14 +3,8 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
+import { MainNav } from "@/features/navigation";
 import { cn } from "@/lib/cn";
-
-const NAV_LINKS = [
-  { href: "/", label: "Accueil" },
-  { href: "/search", label: "Explorer" },
-  { href: "/admin", label: "Admin" },
-  { href: "/about", label: "À propos" },
-] as const;
 
 /**
  * Client Component volontairement : lire la session côté serveur (auth())
@@ -57,20 +51,7 @@ export function Header() {
           </span>
         </Link>
 
-        <nav
-          aria-label="Navigation principale"
-          className="hidden items-center gap-8 text-sm font-medium md:flex"
-        >
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="nav-link inline-flex min-h-11 items-center text-slate-600 transition hover:text-slate-900"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+        <MainNav variant="desktop" />
 
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="hidden items-center gap-2 sm:flex">
@@ -127,17 +108,12 @@ export function Header() {
           mobileOpen && "open",
         )}
       >
-        <nav aria-label="Navigation mobile" className="flex flex-col gap-1 px-4 py-3">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={closeMobileMenu}
-              className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
-            >
-              {link.label}
-            </Link>
-          ))}
+        <div className="flex flex-col gap-1 px-4 py-3">
+          <MainNav
+            variant="mobile"
+            aria-label="Navigation mobile"
+            onNavigate={closeMobileMenu}
+          />
 
           <div className="mt-2 flex flex-col gap-2 border-t border-slate-200 pt-3">
             {status === "authenticated" ? (
@@ -170,7 +146,7 @@ export function Header() {
               </>
             )}
           </div>
-        </nav>
+        </div>
       </div>
     </header>
   );
