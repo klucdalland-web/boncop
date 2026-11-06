@@ -3,6 +3,8 @@
 import { useState, useTransition } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
+import { Input } from "@/components/ui/Input"
+import { Button } from "@/components/ui/Button"
 
 export function LoginForm() {
   const router = useRouter()
@@ -33,38 +35,34 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4">
-      <label className="flex flex-col gap-1">
-        <span className="text-sm font-medium">Email</span>
-        <input
-          name="email"
-          type="email"
-          required
-          autoComplete="email"
-          className="rounded border px-3 py-2"
-        />
-      </label>
+    <form onSubmit={onSubmit} className="flex flex-col gap-5">
+      <Input
+        label="Email"
+        name="email"
+        type="email"
+        required
+        autoComplete="email"
+        placeholder="vous@exemple.com"
+      />
 
-      <label className="flex flex-col gap-1">
-        <span className="text-sm font-medium">Mot de passe</span>
-        <input
-          name="password"
-          type="password"
-          required
-          autoComplete="current-password"
-          className="rounded border px-3 py-2"
-        />
-      </label>
+      <Input
+        label="Mot de passe"
+        name="password"
+        type="password"
+        required
+        autoComplete="current-password"
+        placeholder="••••••••"
+      />
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="text-sm text-danger-fg font-medium bg-danger-bg p-3 rounded-lg">
+          {error}
+        </p>
+      )}
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="rounded bg-black px-4 py-2 text-white disabled:opacity-50"
-      >
-        {isPending ? "Connexion…" : "Se connecter"}
-      </button>
+      <Button type="submit" loading={isPending} className="mt-2 w-full">
+        Se connecter
+      </Button>
     </form>
   )
 }
