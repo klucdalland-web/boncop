@@ -56,7 +56,6 @@ export async function getMetiers() {
     });
 
     return lesMetiers;
-    
   } catch (error) {
     console.error("Erreur de récupération des métiers :", error);
     return [];

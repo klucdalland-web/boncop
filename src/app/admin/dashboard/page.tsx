@@ -66,7 +66,8 @@ export default async function AdminDashboardPage() {
                   }}>
                     <button 
                       type="submit" 
-                      style={{ color: "red", cursor: "pointer" }}>
+                      style={{ color: "red", cursor: "pointer" }}
+                      onClick="return confirm('Voulez-vous vraiment supprimer ce métier ?');">
                       Supprimer
                     </button>
                   </form>
