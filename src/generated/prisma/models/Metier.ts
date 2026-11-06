@@ -37,18 +37,24 @@ export type MetierSumAggregateOutputType = {
 export type MetierMinAggregateOutputType = {
   id: number | null
   libelle: string | null
+  isActif: boolean | null
+  deletedAt: Date | null
   createdAt: Date | null
 }
 
 export type MetierMaxAggregateOutputType = {
   id: number | null
   libelle: string | null
+  isActif: boolean | null
+  deletedAt: Date | null
   createdAt: Date | null
 }
 
 export type MetierCountAggregateOutputType = {
   id: number
   libelle: number
+  isActif: number
+  deletedAt: number
   createdAt: number
   _all: number
 }
@@ -65,18 +71,24 @@ export type MetierSumAggregateInputType = {
 export type MetierMinAggregateInputType = {
   id?: true
   libelle?: true
+  isActif?: true
+  deletedAt?: true
   createdAt?: true
 }
 
 export type MetierMaxAggregateInputType = {
   id?: true
   libelle?: true
+  isActif?: true
+  deletedAt?: true
   createdAt?: true
 }
 
 export type MetierCountAggregateInputType = {
   id?: true
   libelle?: true
+  isActif?: true
+  deletedAt?: true
   createdAt?: true
   _all?: true
 }
@@ -170,6 +182,8 @@ export type MetierGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type MetierGroupByOutputType = {
   id: number
   libelle: string
+  isActif: boolean
+  deletedAt: Date | null
   createdAt: Date
   _count: MetierCountAggregateOutputType | null
   _avg: MetierAvgAggregateOutputType | null
@@ -199,6 +213,8 @@ export type MetierWhereInput = {
   NOT?: Prisma.MetierWhereInput | Prisma.MetierWhereInput[]
   id?: Prisma.IntFilter<"Metier"> | number
   libelle?: Prisma.StringFilter<"Metier"> | string
+  isActif?: Prisma.BoolFilter<"Metier"> | boolean
+  deletedAt?: Prisma.DateTimeNullableFilter<"Metier"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Metier"> | Date | string
   userMetiers?: Prisma.UserMetierListRelationFilter
 }
@@ -206,6 +222,8 @@ export type MetierWhereInput = {
 export type MetierOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   libelle?: Prisma.SortOrder
+  isActif?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   userMetiers?: Prisma.UserMetierOrderByRelationAggregateInput
 }
@@ -216,6 +234,8 @@ export type MetierWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.MetierWhereInput | Prisma.MetierWhereInput[]
   OR?: Prisma.MetierWhereInput[]
   NOT?: Prisma.MetierWhereInput | Prisma.MetierWhereInput[]
+  isActif?: Prisma.BoolFilter<"Metier"> | boolean
+  deletedAt?: Prisma.DateTimeNullableFilter<"Metier"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Metier"> | Date | string
   userMetiers?: Prisma.UserMetierListRelationFilter
 }, "id" | "libelle">
@@ -223,6 +243,8 @@ export type MetierWhereUniqueInput = Prisma.AtLeast<{
 export type MetierOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   libelle?: Prisma.SortOrder
+  isActif?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.MetierCountOrderByAggregateInput
   _avg?: Prisma.MetierAvgOrderByAggregateInput
@@ -237,11 +259,15 @@ export type MetierScalarWhereWithAggregatesInput = {
   NOT?: Prisma.MetierScalarWhereWithAggregatesInput | Prisma.MetierScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Metier"> | number
   libelle?: Prisma.StringWithAggregatesFilter<"Metier"> | string
+  isActif?: Prisma.BoolWithAggregatesFilter<"Metier"> | boolean
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Metier"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Metier"> | Date | string
 }
 
 export type MetierCreateInput = {
   libelle: string
+  isActif?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   userMetiers?: Prisma.UserMetierCreateNestedManyWithoutMetierInput
 }
@@ -249,12 +275,16 @@ export type MetierCreateInput = {
 export type MetierUncheckedCreateInput = {
   id?: number
   libelle: string
+  isActif?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   userMetiers?: Prisma.UserMetierUncheckedCreateNestedManyWithoutMetierInput
 }
 
 export type MetierUpdateInput = {
   libelle?: Prisma.StringFieldUpdateOperationsInput | string
+  isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userMetiers?: Prisma.UserMetierUpdateManyWithoutMetierNestedInput
 }
@@ -262,6 +292,8 @@ export type MetierUpdateInput = {
 export type MetierUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   libelle?: Prisma.StringFieldUpdateOperationsInput | string
+  isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userMetiers?: Prisma.UserMetierUncheckedUpdateManyWithoutMetierNestedInput
 }
@@ -269,23 +301,31 @@ export type MetierUncheckedUpdateInput = {
 export type MetierCreateManyInput = {
   id?: number
   libelle: string
+  isActif?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
 }
 
 export type MetierUpdateManyMutationInput = {
   libelle?: Prisma.StringFieldUpdateOperationsInput | string
+  isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type MetierUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   libelle?: Prisma.StringFieldUpdateOperationsInput | string
+  isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type MetierCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   libelle?: Prisma.SortOrder
+  isActif?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -296,12 +336,16 @@ export type MetierAvgOrderByAggregateInput = {
 export type MetierMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   libelle?: Prisma.SortOrder
+  isActif?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type MetierMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   libelle?: Prisma.SortOrder
+  isActif?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -316,6 +360,14 @@ export type MetierScalarRelationFilter = {
 
 export type StringFieldUpdateOperationsInput = {
   set?: string
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -346,12 +398,16 @@ export type MetierUpdateOneRequiredWithoutUserMetiersNestedInput = {
 
 export type MetierCreateWithoutUserMetiersInput = {
   libelle: string
+  isActif?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
 }
 
 export type MetierUncheckedCreateWithoutUserMetiersInput = {
   id?: number
   libelle: string
+  isActif?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -373,12 +429,16 @@ export type MetierUpdateToOneWithWhereWithoutUserMetiersInput = {
 
 export type MetierUpdateWithoutUserMetiersInput = {
   libelle?: Prisma.StringFieldUpdateOperationsInput | string
+  isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type MetierUncheckedUpdateWithoutUserMetiersInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   libelle?: Prisma.StringFieldUpdateOperationsInput | string
+  isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -416,6 +476,8 @@ export type MetierCountOutputTypeCountUserMetiersArgs<ExtArgs extends runtime.Ty
 export type MetierSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   libelle?: boolean
+  isActif?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   userMetiers?: boolean | Prisma.Metier$userMetiersArgs<ExtArgs>
   _count?: boolean | Prisma.MetierCountOutputTypeDefaultArgs<ExtArgs>
@@ -424,22 +486,28 @@ export type MetierSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type MetierSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   libelle?: boolean
+  isActif?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["metier"]>
 
 export type MetierSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   libelle?: boolean
+  isActif?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["metier"]>
 
 export type MetierSelectScalar = {
   id?: boolean
   libelle?: boolean
+  isActif?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
 }
 
-export type MetierOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "libelle" | "createdAt", ExtArgs["result"]["metier"]>
+export type MetierOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "libelle" | "isActif" | "deletedAt" | "createdAt", ExtArgs["result"]["metier"]>
 export type MetierInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userMetiers?: boolean | Prisma.Metier$userMetiersArgs<ExtArgs>
   _count?: boolean | Prisma.MetierCountOutputTypeDefaultArgs<ExtArgs>
@@ -455,6 +523,8 @@ export type $MetierPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     libelle: string
+    isActif: boolean
+    deletedAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["metier"]>
   composites: {}
@@ -882,6 +952,8 @@ export interface Prisma__MetierClient<T, Null = never, ExtArgs extends runtime.T
 export interface MetierFieldRefs {
   readonly id: Prisma.FieldRef<"Metier", 'Int'>
   readonly libelle: Prisma.FieldRef<"Metier", 'String'>
+  readonly isActif: Prisma.FieldRef<"Metier", 'Boolean'>
+  readonly deletedAt: Prisma.FieldRef<"Metier", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Metier", 'DateTime'>
 }
     

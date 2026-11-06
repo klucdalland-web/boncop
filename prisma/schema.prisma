@@ -28,10 +28,24 @@ enum Status {
 model Metier {
   id          Int          @id @default(autoincrement())
   libelle     String       @unique
+  isActif     Boolean      @default(true) @map("is_actif")
+  deletedAt   DateTime?    @map("deleted_at")
   createdAt   DateTime     @default(now()) @map("created_at")
   userMetiers UserMetier[]
 
+  @@index([isActif])
   @@map("metiers")
+}
+
+model Ville {
+  id        Int       @id @default(autoincrement())
+  libelle   String    @unique
+  isActif   Boolean   @default(true) @map("is_actif")
+  deletedAt DateTime? @map("deleted_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@index([isActif])
+  @@map("villes")
 }
 
 model User {

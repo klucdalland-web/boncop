@@ -6,11 +6,11 @@ import { Icon } from "./icons";
 import type { TopFreelance } from "./queries";
 
 const TONE_CLASSES = [
-  "from-brand-500 to-brand-700",
-  "from-pink-500 to-rose-600",
-  "from-violet to-purple-700",
-  "from-emerald-500 to-emerald-700",
-  "from-amber-500 to-amber-700",
+  "from-brand-500 to-brand-800",
+  "from-accent to-[#9A4418]",
+  "from-[#3D6B5A] to-[#1B5136]",
+  "from-[#C48A26] to-[#8A5A12]",
+  "from-[#4A6356] to-[#24352C]",
 ] as const;
 
 export function getProfileName(profile: TopFreelance): string {

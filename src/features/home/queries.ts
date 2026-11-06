@@ -39,6 +39,14 @@ export async function getTopFreelances(limit = 5): Promise<TopFreelance[]> {
         quartier: true,
         profileViews: true,
         userMetiers: {
+          where: {
+            metier: {
+              is: {
+                isActif: true,
+                deletedAt: null,
+              },
+            },
+          },
           select: {
             metier: {
               select: {

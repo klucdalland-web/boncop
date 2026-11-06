@@ -3,10 +3,17 @@
 import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { registerUser } from "@/features/auth/actions"
+import { CongoPhoneInput } from "@/features/freelance/components/CongoPhoneInput"
 import { Input } from "@/components/ui/Input"
 import { Button } from "@/components/ui/Button"
+import { Select } from "@/components/ui/Select"
+import type { VilleOption } from "@/features/villes/queries"
 
-export function RegisterForm() {
+type RegisterFormProps = {
+  villes: VilleOption[]
+}
+
+export function RegisterForm({ villes }: RegisterFormProps) {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
@@ -37,7 +44,7 @@ export function RegisterForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4">
+    <form method="post" onSubmit={onSubmit} className="flex flex-col gap-4">
       <Input
         label="Email"
         name="email"
@@ -63,12 +70,32 @@ export function RegisterForm() {
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <Input label="Téléphone" name="telephone" type="tel" />
-        <Input label="WhatsApp" name="whatsapp" type="tel" />
+        <CongoPhoneInput label="Téléphone" name="telephone" />
+        <CongoPhoneInput label="WhatsApp" name="whatsapp" />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <Input label="Ville" name="ville" placeholder="Brazzaville..." />
+        <Select
+          label="Ville"
+          name="ville"
+          required
+          defaultValue=""
+          disabled={villes.length === 0}
+          hint={
+            villes.length === 0
+              ? "Aucune ville disponible. Relancez le seed."
+              : undefined
+          }
+        >
+          <option value="" disabled>
+            Choisir une ville
+          </option>
+          {villes.map((ville) => (
+            <option key={ville.id} value={ville.libelle}>
+              {ville.libelle}
+            </option>
+          ))}
+        </Select>
         <Input label="Quartier" name="quartier" />
       </div>
 

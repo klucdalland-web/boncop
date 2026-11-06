@@ -1,15 +1,20 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { signIn } from "next-auth/react"
+import { getSession, signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/Input"
 import { Button } from "@/components/ui/Button"
+import { resolvePostLoginRedirect } from "@/lib/auth-guards"
+
+type SessionUserWithRole = {
+  role?: string
+}
 
 export function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/"
+  const callbackUrl = searchParams.get("callbackUrl")
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
@@ -29,13 +34,18 @@ export function LoginForm() {
         setError("Email ou mot de passe incorrect.")
         return
       }
-      router.push(callbackUrl)
+
+      const session = await getSession()
+      const role = (session?.user as SessionUserWithRole | undefined)?.role
+      const destination = resolvePostLoginRedirect({ role, callbackUrl })
+
+      router.push(destination)
       router.refresh()
     })
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-5">
+    <form method="post" onSubmit={onSubmit} className="flex flex-col gap-5">
       <Input
         label="Email"
         name="email"

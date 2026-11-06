@@ -30,14 +30,14 @@ const VALUES: readonly Value[] = [
     description:
       "Des développeurs, graphistes, rédacteurs, photographes et bien d'autres professionnels.",
     icon: "users",
-    tone: "bg-pink-50 text-pink-600",
+    tone: "bg-brand-50 text-brand-700",
   },
   {
     title: "Notre vision",
     description:
       "Faire du numérique un levier d'opportunités pour la jeunesse congolaise.",
     icon: "rocket",
-    tone: "bg-violet/10 text-violet",
+    tone: "bg-accent/10 text-accent",
   },
   {
     title: "Notre engagement",

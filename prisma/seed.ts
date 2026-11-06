@@ -1,26 +1,69 @@
 import { config } from "dotenv"
 import path from "node:path"
 
-// 1. Charger .env.local
 config({ path: path.resolve(process.cwd(), ".env.local") })
 
-// 2. LA LIGNE MAGIQUE : On écrase DATABASE_URL par DIRECT_URL
-// Ainsi, quand prisma.ts sera importé, il utilisera le port 5432.
+// Connexion directe (port 5432) pour le seed — évite le pooler transactionnel.
 process.env.DATABASE_URL = process.env.DIRECT_URL
 
-// 3. Maintenant on importe Prisma
 import prisma from "../src/db/prisma"
 import bcrypt from "bcryptjs"
+import { CONGO_VILLES } from "../src/features/villes/data"
 
-// ... le reste de ton code (async function main() { ... })
+/** Métiers de départ pour BonCop (Congo). Idempotent via upsert sur libelle. */
+const METIERS = [
+  "Développeur web",
+  "Développeur mobile",
+  "Graphiste",
+  "Designer UI/UX",
+  "Rédacteur web",
+  "Community manager",
+  "Photographe",
+  "Vidéaste",
+  "Monteur vidéo",
+  "Traducteur",
+  "Comptable",
+  "Assistant administratif",
+  "Commercial",
+  "Formateur",
+  "Infographiste",
+  "Motion designer",
+  "SEO / SEA",
+  "Data analyst",
+  "Électricien",
+  "Plombier",
+] as const
 
-console.log("DATABASE_URL type:", typeof process.env.DATABASE_URL)
-console.log("DATABASE_URL défini:", Boolean(process.env.DATABASE_URL))
-console.log("DIRECT_URL type:", typeof process.env.DIRECT_URL)
-console.log("DIRECT_URL défini:", Boolean(process.env.DIRECT_URL))
+async function seedMetiers() {
+  console.log("⏳ Seed des métiers...")
 
-async function main() {
-  console.log("⏳ Début de la création des comptes de test...")
+  for (const libelle of METIERS) {
+    await prisma.metier.upsert({
+      where: { libelle },
+      update: {},
+      create: { libelle },
+    })
+  }
+
+  console.log(`✅ ${METIERS.length} métiers prêts`)
+}
+
+async function seedVilles() {
+  console.log("⏳ Seed des villes du Congo...")
+
+  for (const libelle of CONGO_VILLES) {
+    await prisma.ville.upsert({
+      where: { libelle },
+      update: {},
+      create: { libelle },
+    })
+  }
+
+  console.log(`✅ ${CONGO_VILLES.length} villes prêtes`)
+}
+
+async function seedUsers() {
+  console.log("⏳ Seed des comptes de test...")
 
   const freelancePassword = await bcrypt.hash("Test1234", 12)
   const adminPassword = await bcrypt.hash("Admin1234", 12)
@@ -36,6 +79,9 @@ async function main() {
       prenom: "Test",
       nom: "Freelance",
       ville: "Brazzaville",
+      quartier: "Poto-Poto",
+      cvDescription:
+        "Freelance polyvalent basé à Brazzaville. Disponible pour missions web et design.",
     },
   })
   console.log("✅ Compte Freelance prêt :", freelance.email)
@@ -53,6 +99,40 @@ async function main() {
     },
   })
   console.log("✅ Compte Admin prêt :", admin.email)
+
+  const metiersDemo = await prisma.metier.findMany({
+    where: { libelle: { in: ["Développeur web", "Graphiste"] } },
+    select: { id: true },
+  })
+
+  for (const metier of metiersDemo) {
+    await prisma.userMetier.upsert({
+      where: {
+        userId_metierId: {
+          userId: freelance.id,
+          metierId: metier.id,
+        },
+      },
+      update: {},
+      create: {
+        userId: freelance.id,
+        metierId: metier.id,
+      },
+    })
+  }
+
+  console.log("✅ Métiers associés au freelance de démo")
+}
+
+async function main() {
+  if (!process.env.DIRECT_URL && !process.env.DATABASE_URL) {
+    throw new Error("DIRECT_URL (ou DATABASE_URL) manquante dans .env.local")
+  }
+
+  await seedMetiers()
+  await seedVilles()
+  await seedUsers()
+  console.log("🎉 Seed terminé")
 }
 
 main()

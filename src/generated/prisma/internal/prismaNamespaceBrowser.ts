@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Metier: 'Metier',
+  Ville: 'Ville',
   User: 'User',
   UserMetier: 'UserMetier'
 } as const
@@ -75,10 +76,23 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const MetierScalarFieldEnum = {
   id: 'id',
   libelle: 'libelle',
+  isActif: 'isActif',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt'
 } as const
 
 export type MetierScalarFieldEnum = (typeof MetierScalarFieldEnum)[keyof typeof MetierScalarFieldEnum]
+
+
+export const VilleScalarFieldEnum = {
+  id: 'id',
+  libelle: 'libelle',
+  isActif: 'isActif',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type VilleScalarFieldEnum = (typeof VilleScalarFieldEnum)[keyof typeof VilleScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

@@ -47,6 +47,11 @@ export { Prisma }
  */
 export type Metier = Prisma.MetierModel
 /**
+ * Model Ville
+ * 
+ */
+export type Ville = Prisma.VilleModel
+/**
  * Model User
  * 
  */
