@@ -3,6 +3,8 @@
 import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { registerUser } from "@/features/auth/actions"
+import { Input } from "@/components/ui/Input"
+import { Button } from "@/components/ui/Button"
 
 export function RegisterForm() {
   const router = useRouter()
@@ -36,58 +38,49 @@ export function RegisterForm() {
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4">
-      <label className="flex flex-col gap-1">
-        <span className="text-sm font-medium">Email</span>
-        <input name="email" type="email" required autoComplete="email" className="rounded border px-3 py-2" />
-      </label>
+      <Input
+        label="Email"
+        name="email"
+        type="email"
+        required
+        autoComplete="email"
+        placeholder="vous@exemple.com"
+      />
 
-      <label className="flex flex-col gap-1">
-        <span className="text-sm font-medium">Mot de passe</span>
-        <input name="password" type="password" required minLength={8} autoComplete="new-password" className="rounded border px-3 py-2" />
-      </label>
+      <Input
+        label="Mot de passe"
+        name="password"
+        type="password"
+        required
+        minLength={8}
+        autoComplete="new-password"
+        hint="Au moins 8 caractères."
+      />
 
       <div className="grid grid-cols-2 gap-3">
-        <label className="flex flex-col gap-1">
-          <span className="text-sm font-medium">Prénom</span>
-          <input name="prenom" className="rounded border px-3 py-2" />
-        </label>
-        <label className="flex flex-col gap-1">
-          <span className="text-sm font-medium">Nom</span>
-          <input name="nom" className="rounded border px-3 py-2" />
-        </label>
+        <Input label="Prénom" name="prenom" />
+        <Input label="Nom" name="nom" />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <label className="flex flex-col gap-1">
-          <span className="text-sm font-medium">Téléphone</span>
-          <input name="telephone" className="rounded border px-3 py-2" />
-        </label>
-        <label className="flex flex-col gap-1">
-          <span className="text-sm font-medium">WhatsApp</span>
-          <input name="whatsapp" className="rounded border px-3 py-2" />
-        </label>
+        <Input label="Téléphone" name="telephone" type="tel" />
+        <Input label="WhatsApp" name="whatsapp" type="tel" />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <label className="flex flex-col gap-1">
-          <span className="text-sm font-medium">Ville</span>
-          <input name="ville" className="rounded border px-3 py-2" />
-        </label>
-        <label className="flex flex-col gap-1">
-          <span className="text-sm font-medium">Quartier</span>
-          <input name="quartier" className="rounded border px-3 py-2" />
-        </label>
+        <Input label="Ville" name="ville" placeholder="Brazzaville..." />
+        <Input label="Quartier" name="quartier" />
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="text-sm text-danger-fg font-medium bg-danger-bg p-3 rounded-lg">
+          {error}
+        </p>
+      )}
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="rounded bg-black px-4 py-2 text-white disabled:opacity-50"
-      >
-        {isPending ? "Création…" : "Créer mon compte"}
-      </button>
+      <Button type="submit" loading={isPending} className="mt-2 w-full">
+        Créer mon compte
+      </Button>
     </form>
   )
 }

@@ -1,34 +1,21 @@
 import Link from "next/link";
 
-const navigationLinks = [
-  { href: "/", label: "Accueil" },
-  { href: "/search", label: "Explorer" },
-  { href: "/about", label: "À propos" },
-  { href: "/register", label: "S'inscrire" },
-] as const;
 
-const accountLinks = [
-  { href: "/login", label: "Connexion" },
-  { href: "/register", label: "Inscription" },
-] as const;
+import {
+  FOOTER_ACCOUNT_LINKS,
+  FOOTER_LEGAL_LINKS,
+  FOOTER_NAV_LINKS,
+  NavLink,
+  type NavLinkItem,
+} from "@/features/navigation";
 
-const legalLinks = [
-  { href: "#", label: "Mentions légales" },
-  { href: "#", label: "Confidentialité" },
-  { href: "#", label: "CGU" },
-] as const;
-
-type FooterLink = {
-  href: string;
-  label: string;
-};
 
 function FooterColumn({
   title,
   links,
 }: {
   title: string;
-  links: readonly FooterLink[];
+  links: readonly NavLinkItem[];
 }) {
   return (
     <div>
@@ -38,12 +25,7 @@ function FooterColumn({
       <ul className="space-y-1 text-sm">
         {links.map((link) => (
           <li key={`${title}-${link.label}`}>
-            <Link
-              href={link.href}
-              className="inline-flex min-h-11 items-center text-slate-400 transition hover:text-white"
-            >
-              {link.label}
-            </Link>
+            <NavLink link={link} variant="footer" />
           </li>
         ))}
       </ul>
@@ -73,9 +55,9 @@ export function Footer() {
             </p>
           </div>
 
-          <FooterColumn title="Navigation" links={navigationLinks} />
-          <FooterColumn title="Mon compte" links={accountLinks} />
-          <FooterColumn title="Légal" links={legalLinks} />
+          <FooterColumn title="Navigation" links={FOOTER_NAV_LINKS} />
+          <FooterColumn title="Mon compte" links={FOOTER_ACCOUNT_LINKS} />
+          <FooterColumn title="Légal" links={FOOTER_LEGAL_LINKS} />
         </div>
 
         <div className="flex flex-col items-center justify-between gap-2 border-t border-slate-800 pt-6 text-xs text-slate-500 sm:flex-row">
