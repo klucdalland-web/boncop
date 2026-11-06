@@ -1,4 +1,6 @@
 import Link from "next/link";
+
+
 import {
   FOOTER_ACCOUNT_LINKS,
   FOOTER_LEGAL_LINKS,
@@ -6,6 +8,7 @@ import {
   NavLink,
   type NavLinkItem,
 } from "@/features/navigation";
+
 
 function FooterColumn({
   title,

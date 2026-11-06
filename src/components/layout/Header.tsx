@@ -1,10 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { MainNav } from "@/features/navigation";
 import { cn } from "@/lib/cn";
+
+type SessionUserWithRole = {
+  role?: string;
+};
 
 /**
  * Client Component volontairement : lire la session côté serveur (auth())
@@ -12,9 +16,12 @@ import { cn } from "@/lib/cn";
  * l'ISR de / et le SSG de /about. La session est donc lue côté client.
  */
 export function Header() {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  
+  const role = (session?.user as SessionUserWithRole | undefined)?.role;
+  const isAdmin = status === "authenticated" && role === "ADMIN";
 
   useEffect(() => {
     if (!mobileOpen) {
@@ -34,6 +41,11 @@ export function Header() {
 
   const closeMobileMenu = () => setMobileOpen(false);
 
+  async function handleSignOut() {
+    closeMobileMenu();
+    await signOut({ callbackUrl: "/" });
+  }
+
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -51,17 +63,27 @@ export function Header() {
           </span>
         </Link>
 
+        {/* Utilisation du composant centralisé MainNav */}
         <MainNav variant="desktop" />
 
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="hidden items-center gap-2 sm:flex">
             {status === "authenticated" ? (
-              <Link
-                href="/profile/edit"
-                className="inline-flex min-h-11 items-center rounded-full bg-linear-to-r from-brand-600 to-violet px-4 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-glow"
-              >
-                Mon profil
-              </Link>
+              <>
+                <Link
+                  href="/profile/edit"
+                  className="inline-flex min-h-11 items-center rounded-full bg-linear-to-r from-brand-600 to-violet px-4 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-glow"
+                >
+                  Mon profil
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+                >
+                  Déconnexion
+                </button>
+              </>
             ) : (
               <>
                 <Link
@@ -109,6 +131,7 @@ export function Header() {
         )}
       >
         <div className="flex flex-col gap-1 px-4 py-3">
+          {/* Utilisation de MainNav pour la version mobile */}
           <MainNav
             variant="mobile"
             aria-label="Navigation mobile"
@@ -117,13 +140,22 @@ export function Header() {
 
           <div className="mt-2 flex flex-col gap-2 border-t border-slate-200 pt-3">
             {status === "authenticated" ? (
-              <Link
-                href="/profile/edit"
-                onClick={closeMobileMenu}
-                className="inline-flex min-h-11 items-center justify-center rounded-full bg-linear-to-r from-brand-600 to-violet px-4 text-sm font-semibold text-white transition"
-              >
-                Mon profil
-              </Link>
+              <>
+                <Link
+                  href="/profile/edit"
+                  onClick={closeMobileMenu}
+                  className="inline-flex min-h-11 items-center justify-center rounded-full bg-linear-to-r from-brand-600 to-violet px-4 text-sm font-semibold text-white transition"
+                >
+                  Mon profil
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-200 px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                >
+                  Déconnexion
+                </button>
+              </>
             ) : (
               <>
                 <Link
