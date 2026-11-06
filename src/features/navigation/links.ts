@@ -14,9 +14,14 @@ export type NavLinkItem = {
 export const MAIN_NAV_LINKS = [
   { href: "/", label: "Accueil", match: "exact" },
   { href: "/search", label: "Explorer" },
-  { href: "/admin", label: "Admin" },
   { href: "/about", label: "À propos", match: "exact" },
 ] as const satisfies readonly NavLinkItem[];
+
+/** Lien visible uniquement pour les comptes ADMIN. */
+export const ADMIN_NAV_LINK = {
+  href: "/admin/dashboard",
+  label: "Admin",
+} as const satisfies NavLinkItem;
 
 /** Colonne « Navigation » du footer. */
 export const FOOTER_NAV_LINKS = [
@@ -30,7 +35,6 @@ export const FOOTER_NAV_LINKS = [
 export const FOOTER_ACCOUNT_LINKS = [
   { href: "/login", label: "Connexion", match: "exact" },
   { href: "/register", label: "Inscription", match: "exact" },
-  { href: "/admin", label: "Admin" },
 ] as const satisfies readonly NavLinkItem[];
 
 /** Colonne « Légal » du footer (placeholders pour l'instant). */

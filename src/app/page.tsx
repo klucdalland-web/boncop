@@ -133,7 +133,7 @@ export default async function HomePage() {
                 aria-hidden="true"
                 className="absolute inset-0 flex items-center justify-center"
               >
-                <div className="h-72 w-72 rounded-full bg-linear-to-br from-brand-400/40 to-violet/40 blur-3xl" />
+                <div className="h-72 w-72 rounded-full bg-linear-to-br from-brand-400/35 to-accent/25 blur-3xl" />
               </div>
 
               {heroProfile ? (
@@ -202,8 +202,8 @@ export default async function HomePage() {
                   <div className="absolute -bottom-3 -left-3 hidden items-center gap-2 rounded-xl border border-slate-100 bg-white px-3 py-2 shadow-lift sm:flex">
                     <div className="flex -space-x-1.5" aria-hidden="true">
                       <span className="h-5 w-5 rounded-full border border-white bg-brand-500" />
-                      <span className="h-5 w-5 rounded-full border border-white bg-violet" />
-                      <span className="h-5 w-5 rounded-full border border-white bg-pink-500" />
+                      <span className="h-5 w-5 rounded-full border border-white bg-accent" />
+                      <span className="h-5 w-5 rounded-full border border-white bg-brand-800" />
                     </div>
                     <p className="text-[10px] font-semibold text-slate-900">
                       +{formatNumber(stats.totalFreelances)} talents
@@ -214,7 +214,7 @@ export default async function HomePage() {
                 <div className="border-gradient relative w-full max-w-sm rounded-2xl p-6 shadow-lift">
                   <div
                     aria-hidden="true"
-                    className="flex h-14 w-14 items-center justify-center rounded-xl bg-linear-to-br from-brand-500 to-violet text-lg font-extrabold text-white shadow-glow"
+                    className="flex h-14 w-14 items-center justify-center rounded-xl bg-brand-700 text-lg font-extrabold text-white shadow-soft"
                   >
                     B
                   </div>

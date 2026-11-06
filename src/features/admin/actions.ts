@@ -1,63 +1,215 @@
-"use strict";
+"use server";
 
-import  prisma from "@/db/prisma"; // Assurez-vous que le chemin vers votre client Prisma est correct
 import { revalidatePath } from "next/cache";
+import type { Status } from "@/generated/prisma/client";
+import prisma from "@/db/prisma";
+import { requireAdmin } from "./require-admin";
 
-// Type optionnel pour typer le retour si nécessaire, Prisma 7 génère automatiquement le type "Metier"
-export async function createMetier(libelle: string) {
+export type AdminActionResult =
+  | { success: true }
+  | { success: false; error: string };
+
+const ALLOWED_STATUSES: readonly Status[] = ["ATTENTE", "VALIDATE", "BANNI"];
+
+function revalidateAdmin() {
+  revalidatePath("/admin/dashboard");
+  revalidatePath("/search");
+  revalidatePath("/");
+}
+
+export async function createMetier(
+  libelle: string,
+): Promise<AdminActionResult> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { success: false, error: "Accès réservé aux administrateurs." };
+  }
+
   const sanitizedLibelle = libelle.trim();
 
   if (!sanitizedLibelle) {
-    throw new Error("Le libellé ne peut pas être vide.");
+    return { success: false, error: "Le libellé ne peut pas être vide." };
+  }
+
+  if (sanitizedLibelle.length > 80) {
+    return {
+      success: false,
+      error: "Le libellé ne peut pas dépasser 80 caractères.",
+    };
   }
 
   try {
-    // Vérification de l'existence (Prisma v7 conserve la syntaxe findUnique)
     const existing = await prisma.metier.findUnique({
       where: { libelle: sanitizedLibelle },
+      select: { id: true, isActif: true, deletedAt: true },
     });
 
     if (existing) {
-      throw new Error("Ce métier existe déjà.");
+      // Réactive un métier soft-deleted au lieu de bloquer sur l'unicité
+      if (!existing.isActif || existing.deletedAt) {
+        await prisma.metier.update({
+          where: { id: existing.id },
+          data: { isActif: true, deletedAt: null },
+        });
+        revalidateAdmin();
+        return { success: true };
+      }
+
+      return { success: false, error: "Ce métier existe déjà." };
     }
 
-    const newMetier = await prisma.metier.create({
-      data: { libelle: sanitizedLibelle },
+    await prisma.metier.create({
+      data: {
+        libelle: sanitizedLibelle,
+        isActif: true,
+        deletedAt: null,
+      },
     });
 
-    // Force Next.js à rafraîchir le cache de la page admin après l'ajout
-    revalidatePath("/dashboard"); 
-    
-    return newMetier;
-  } catch (error: any) {
-    throw new Error(error.message || "Impossible de créer le métier.");
+    revalidateAdmin();
+    return { success: true };
+  } catch (error) {
+    console.error("createMetier", error);
+    return { success: false, error: "Impossible de créer le métier." };
   }
 }
 
-export async function deleteMetier(id: number) {
+/** Soft delete : isActif=false + deletedAt. */
+export async function deleteMetier(id: number): Promise<AdminActionResult> {
   try {
-    await prisma.metier.delete({
+    await requireAdmin();
+  } catch {
+    return { success: false, error: "Accès réservé aux administrateurs." };
+  }
+
+  if (!Number.isSafeInteger(id) || id < 1) {
+    return { success: false, error: "Identifiant de métier invalide." };
+  }
+
+  try {
+    const metier = await prisma.metier.findUnique({
       where: { id },
+      select: { id: true, isActif: true },
     });
 
-    // Force Next.js à rafraîchir le cache de la page admin après la suppression
-    revalidatePath("/dashboard");
+    if (!metier) {
+      return { success: false, error: "Métier introuvable." };
+    }
+
+    if (!metier.isActif) {
+      return { success: false, error: "Ce métier est déjà désactivé." };
+    }
+
+    await prisma.metier.update({
+      where: { id },
+      data: {
+        isActif: false,
+        deletedAt: new Date(),
+      },
+    });
+
+    revalidateAdmin();
+    return { success: true };
   } catch (error) {
-    throw new Error("Erreur lors de la suppression du métier. Vérifiez qu'il existe.");
+    console.error("deleteMetier", error);
+    return {
+      success: false,
+      error: "Impossible de désactiver ce métier.",
+    };
   }
 }
 
-// Fonction utilitaire pour alimenter notre vue brute
-export async function getMetiers() {
+/** Réactive un métier soft-deleted. */
+export async function restoreMetier(id: number): Promise<AdminActionResult> {
   try {
+    await requireAdmin();
+  } catch {
+    return { success: false, error: "Accès réservé aux administrateurs." };
+  }
 
-    const lesMetiers  = await prisma.metier.findMany({
-      orderBy: { libelle: "asc" },
+  if (!Number.isSafeInteger(id) || id < 1) {
+    return { success: false, error: "Identifiant de métier invalide." };
+  }
+
+  try {
+    const metier = await prisma.metier.findUnique({
+      where: { id },
+      select: { id: true, isActif: true },
     });
 
-    return lesMetiers;
+    if (!metier) {
+      return { success: false, error: "Métier introuvable." };
+    }
+
+    if (metier.isActif) {
+      return { success: false, error: "Ce métier est déjà actif." };
+    }
+
+    await prisma.metier.update({
+      where: { id },
+      data: {
+        isActif: true,
+        deletedAt: null,
+      },
+    });
+
+    revalidateAdmin();
+    return { success: true };
   } catch (error) {
-    console.error("Erreur de récupération des métiers :", error);
-    return [];
+    console.error("restoreMetier", error);
+    return { success: false, error: "Impossible de réactiver ce métier." };
+  }
+}
+
+/**
+ * Change le statut d'un compte freelance (validation, bannissement, remise en attente).
+ * Les comptes ADMIN ne peuvent pas être modifiés.
+ */
+export async function updateFreelanceStatus(
+  userId: number,
+  status: Status,
+): Promise<AdminActionResult> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { success: false, error: "Accès réservé aux administrateurs." };
+  }
+
+  if (!Number.isSafeInteger(userId) || userId < 1) {
+    return { success: false, error: "Identifiant de compte invalide." };
+  }
+
+  if (!ALLOWED_STATUSES.includes(status)) {
+    return { success: false, error: "Statut invalide." };
+  }
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, role: true },
+    });
+
+    if (!user) {
+      return { success: false, error: "Compte introuvable." };
+    }
+
+    if (user.role !== "FREELANCE") {
+      return {
+        success: false,
+        error: "Seuls les comptes freelances peuvent être modérés.",
+      };
+    }
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { validated: status },
+    });
+
+    revalidateAdmin();
+    return { success: true };
+  } catch (error) {
+    console.error("updateFreelanceStatus", error);
+    return { success: false, error: "Impossible de mettre à jour le compte." };
   }
 }

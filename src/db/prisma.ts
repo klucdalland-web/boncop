@@ -1,4 +1,4 @@
-import { PrismaClient } from "../generated/prisma";
+import { PrismaClient } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { config } from "dotenv";
 import path from "node:path";
@@ -7,15 +7,20 @@ import path from "node:path";
 config({ path: path.resolve(process.cwd(), ".env.local") });
 
 const prismaClientSingleton = () => {
-  // Lire la variable ICI, à l'intérieur de la fonction
-  const connectionString = process.env.DATABASE_URL;
-  
-  // Log de vérification (à supprimer après)
-  console.log("Prisma adapter connection string type:", typeof connectionString);
-  console.log("Prisma adapter connection string défini:", Boolean(connectionString));
+  const connectionString = process.env.DATABASE_URL?.trim();
 
   if (!connectionString) {
     throw new Error("DATABASE_URL n'est pas définie. Vérifie ton .env.local.");
+  }
+
+  // PrismaPg / undici lèvent ERR_INVALID_URL si la chaîne est mal formée
+  try {
+    // new URL n'accepte pas le schéma postgresql: — on valide via un schéma http
+    void new URL(connectionString.replace(/^postgres(ql)?:/i, "http:"));
+  } catch {
+    throw new Error(
+      "DATABASE_URL est invalide. Attendu: postgresql://USER:PASSWORD@HOST:PORT/DB",
+    );
   }
 
   const adapter = new PrismaPg({ connectionString });

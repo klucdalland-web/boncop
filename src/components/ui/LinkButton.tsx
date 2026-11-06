@@ -15,7 +15,7 @@ export type LinkButtonProps = {
 
 const variants: Record<LinkButtonVariant, string> = {
   primary:
-    "bg-linear-to-r from-brand-600 to-violet text-white shadow-soft hover:-translate-y-0.5 hover:shadow-glow active:translate-y-0",
+    "bg-brand-700 text-white shadow-soft hover:-translate-y-0.5 hover:bg-brand-800 active:translate-y-0",
   secondary:
     "border border-slate-200 bg-white text-slate-700 shadow-soft hover:-translate-y-0.5 hover:bg-slate-50",
   ghost: "text-slate-700 hover:bg-slate-100",

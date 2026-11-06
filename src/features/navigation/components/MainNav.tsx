@@ -1,8 +1,9 @@
 "use client";
 
 import type { MouseEventHandler } from "react";
+import { useSession } from "next-auth/react";
 import { cn } from "@/lib/cn";
-import { MAIN_NAV_LINKS } from "../links";
+import { ADMIN_NAV_LINK, MAIN_NAV_LINKS } from "../links";
 import { NavLink, type NavLinkVariant } from "./NavLink";
 
 export type MainNavProps = {
@@ -15,9 +16,13 @@ export type MainNavProps = {
   onNavigate?: MouseEventHandler<HTMLAnchorElement>;
 };
 
+type SessionUserWithRole = {
+  role?: string;
+};
+
 /**
  * Navigation principale réutilisable (header desktop et menu mobile).
- * Les liens viennent de `MAIN_NAV_LINKS`.
+ * Les liens viennent de `MAIN_NAV_LINKS` ; le lien Admin n'apparaît que pour un ADMIN.
  */
 export function MainNav({
   variant = "desktop",
@@ -25,6 +30,14 @@ export function MainNav({
   className,
   onNavigate,
 }: MainNavProps) {
+  const { data: session, status } = useSession();
+  const role = (session?.user as SessionUserWithRole | undefined)?.role;
+  const isAdmin = status === "authenticated" && role === "ADMIN";
+
+  const links = isAdmin
+    ? [...MAIN_NAV_LINKS, ADMIN_NAV_LINK]
+    : [...MAIN_NAV_LINKS];
+
   return (
     <nav
       aria-label={ariaLabel}
@@ -35,7 +48,7 @@ export function MainNav({
         className,
       )}
     >
-      {MAIN_NAV_LINKS.map((link) => (
+      {links.map((link) => (
         <NavLink
           key={link.href}
           link={link}

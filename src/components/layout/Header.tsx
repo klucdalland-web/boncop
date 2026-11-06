@@ -55,7 +55,7 @@ export function Header() {
           className="group flex min-h-11 items-center gap-2.5"
           onClick={closeMobileMenu}
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-brand-500 to-violet text-sm font-extrabold text-white shadow-glow transition group-hover:scale-105">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-700 text-sm font-extrabold text-white transition group-hover:scale-105">
             B
           </span>
           <span className="text-lg font-extrabold tracking-tight text-slate-900">
@@ -71,10 +71,10 @@ export function Header() {
             {status === "authenticated" ? (
               <>
                 <Link
-                  href="/profile/edit"
-                  className="inline-flex min-h-11 items-center rounded-full bg-linear-to-r from-brand-600 to-violet px-4 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-glow"
+                  href={isAdmin ? "/admin/dashboard" : "/profile/edit"}
+                  className="inline-flex min-h-11 items-center rounded-full bg-brand-700 px-4 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-brand-800"
                 >
-                  Mon profil
+                  {isAdmin ? "Espace admin" : "Mon profil"}
                 </Link>
                 <button
                   type="button"
@@ -94,7 +94,7 @@ export function Header() {
                 </Link>
                 <Link
                   href="/register"
-                  className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-linear-to-r from-brand-600 to-violet px-4 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-glow"
+                  className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-brand-700 px-4 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-brand-800"
                 >
                   Rejoindre
                   <span aria-hidden="true" className="text-[10px]">
@@ -142,11 +142,11 @@ export function Header() {
             {status === "authenticated" ? (
               <>
                 <Link
-                  href="/profile/edit"
+                  href={isAdmin ? "/admin/dashboard" : "/profile/edit"}
                   onClick={closeMobileMenu}
-                  className="inline-flex min-h-11 items-center justify-center rounded-full bg-linear-to-r from-brand-600 to-violet px-4 text-sm font-semibold text-white transition"
+                  className="inline-flex min-h-11 items-center justify-center rounded-full bg-brand-700 px-4 text-sm font-semibold text-white transition hover:bg-brand-800"
                 >
-                  Mon profil
+                  {isAdmin ? "Espace admin" : "Mon profil"}
                 </Link>
                 <button
                   type="button"
@@ -168,7 +168,7 @@ export function Header() {
                 <Link
                   href="/register"
                   onClick={closeMobileMenu}
-                  className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full bg-linear-to-r from-brand-600 to-violet px-4 text-sm font-semibold text-white transition"
+                  className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full bg-brand-700 px-4 text-sm font-semibold text-white transition hover:bg-brand-800"
                 >
                   Rejoindre
                   <span aria-hidden="true" className="text-[10px]">

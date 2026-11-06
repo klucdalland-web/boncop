@@ -44,7 +44,7 @@ export function Footer() {
               aria-label="BonCop, accueil"
               className="mb-4 inline-flex min-h-11 items-center gap-2.5"
             >
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-brand-500 to-violet text-sm font-extrabold text-white">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-700 text-sm font-extrabold text-white">
                 B
               </span>
               <span className="text-lg font-extrabold text-white">BonCop</span>
@@ -63,7 +63,7 @@ export function Footer() {
         <div className="flex flex-col items-center justify-between gap-2 border-t border-slate-800 pt-6 text-xs text-slate-500 sm:flex-row">
           <p>© {new Date().getFullYear()} BonCop. Tous droits réservés.</p>
           <p>
-            Fait avec <span className="text-pink-500">❤</span> au Congo
+            Fait avec <span className="text-accent">❤</span> au Congo
           </p>
         </div>
       </div>

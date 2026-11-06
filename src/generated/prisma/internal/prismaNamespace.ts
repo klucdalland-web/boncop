@@ -398,6 +398,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Metier: 'Metier',
+  Ville: 'Ville',
   User: 'User',
   UserMetier: 'UserMetier'
 } as const
@@ -415,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "metier" | "user" | "userMetier"
+    modelProps: "metier" | "ville" | "user" | "userMetier"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -490,6 +491,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.MetierCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.MetierCountAggregateOutputType> | number
+        }
+      }
+    }
+    Ville: {
+      payload: Prisma.$VillePayload<ExtArgs>
+      fields: Prisma.VilleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VilleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VilleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillePayload>
+        }
+        findFirst: {
+          args: Prisma.VilleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VilleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillePayload>
+        }
+        findMany: {
+          args: Prisma.VilleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillePayload>[]
+        }
+        create: {
+          args: Prisma.VilleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillePayload>
+        }
+        createMany: {
+          args: Prisma.VilleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VilleCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillePayload>[]
+        }
+        delete: {
+          args: Prisma.VilleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillePayload>
+        }
+        update: {
+          args: Prisma.VilleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillePayload>
+        }
+        deleteMany: {
+          args: Prisma.VilleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VilleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VilleUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillePayload>[]
+        }
+        upsert: {
+          args: Prisma.VilleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillePayload>
+        }
+        aggregate: {
+          args: Prisma.VilleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVille>
+        }
+        groupBy: {
+          args: Prisma.VilleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VilleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VilleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VilleCountAggregateOutputType> | number
         }
       }
     }
@@ -683,10 +758,23 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const MetierScalarFieldEnum = {
   id: 'id',
   libelle: 'libelle',
+  isActif: 'isActif',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt'
 } as const
 
 export type MetierScalarFieldEnum = (typeof MetierScalarFieldEnum)[keyof typeof MetierScalarFieldEnum]
+
+
+export const VilleScalarFieldEnum = {
+  id: 'id',
+  libelle: 'libelle',
+  isActif: 'isActif',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type VilleScalarFieldEnum = (typeof VilleScalarFieldEnum)[keyof typeof VilleScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
@@ -773,6 +861,13 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'String[]'
  */
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -983,6 +1078,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   metier?: Prisma.MetierOmit
+  ville?: Prisma.VilleOmit
   user?: Prisma.UserOmit
   userMetier?: Prisma.UserMetierOmit
 }
