@@ -1,16 +1,13 @@
 import { auth } from "@/auth"
 import { NextResponse } from "next/server"
 import { decideAuthRedirect } from "@/lib/auth-guards"
-import type { Role } from "@/generated/prisma"
 
 export default auth((req) => {
-  const user = req.auth?.user as { role?: Role; validated?: string } | undefined
-
   const target = decideAuthRedirect({
     path: req.nextUrl.pathname,
     isLogged: !!req.auth,
-    role: user?.role,
-    validated: user?.validated,
+    role: (req.auth?.user as any)?.role,
+    validated: (req.auth?.user as any)?.validated,
   })
 
   if (target) {
