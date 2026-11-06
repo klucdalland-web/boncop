@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 
 vi.mock("@/db/prisma", () => ({
-  default: {
+  prisma: {
     user: {
       findUnique: vi.fn(),
       create: vi.fn(),
@@ -21,7 +21,7 @@ vi.mock("@/auth", () => ({
 }))
 
 import { registerUser, verifySession } from "./actions"
-import prisma from "@/db/prisma"
+import { prisma } from "@/db/prisma"
 import { auth } from "@/auth"
 
 describe("registerUser", () => {
@@ -40,7 +40,7 @@ describe("registerUser", () => {
   })
 
   it("refuse un email déjà utilisé", async () => {
-    vi.mocked(prisma.user.findUnique).mockResolvedValue({ id: 1 } as Record<string, unknown> as never)
+    vi.mocked(prisma.user.findUnique).mockResolvedValue({ id: 1 } as any)
 
     const result = await registerUser({ email: "a@b.com", password: "12345678" })
     expect(result.success).toBe(false)
@@ -49,7 +49,7 @@ describe("registerUser", () => {
 
   it("crée le freelance avec role FREELANCE et validated ATTENTE", async () => {
     vi.mocked(prisma.user.findUnique).mockResolvedValue(null)
-    vi.mocked(prisma.user.create).mockResolvedValue({ id: 42 } as Record<string, unknown> as never)
+    vi.mocked(prisma.user.create).mockResolvedValue({ id: 42 } as any)
 
     const result = await registerUser({ email: "New@B.com", password: "12345678" })
 
@@ -69,13 +69,13 @@ describe("registerUser", () => {
 
 describe("verifySession", () => {
   it("retourne null sans session", async () => {
-    vi.mocked(auth).mockResolvedValue(null as never)
+    vi.mocked(auth).mockResolvedValue(null as any)
     expect(await verifySession()).toBeNull()
   })
 
   it("retourne la session si connecté", async () => {
     const session = { user: { email: "a@b.com" } }
-    vi.mocked(auth).mockResolvedValue(session as never)
+    vi.mocked(auth).mockResolvedValue(session as any)
     expect(await verifySession()).toEqual(session)
   })
 })
