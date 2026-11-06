@@ -10,7 +10,6 @@ const navigationLinks = [
 const accountLinks = [
   { href: "/login", label: "Connexion" },
   { href: "/register", label: "Inscription" },
-  { href: "/admin", label: "Admin" },
 ] as const;
 
 const legalLinks = [
